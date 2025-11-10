@@ -26,12 +26,14 @@ interface Reminder {
   id: string;
   patientName: string;
   medName: string;
+  medQuantity: string;
   time: Date;
 }
 
 export default function TabOneScreen() {
   const [patientName, setPatientName] = useState('');
   const [medName, setMedName] = useState('');
+  const [medQuantity, setMedQuantity] = useState('');
   const router = useRouter(); // <-- ADICIONE ESTA LINHA
   const [time, setTime] = useState(new Date());
   
@@ -42,6 +44,7 @@ export default function TabOneScreen() {
   id: string;
   patientName: string;
   medName: string;
+  medQuantity: string;
   time: Date;
   notificationId?: string; // <-- ADICIONE ESTA LINHA
 }
@@ -91,7 +94,7 @@ export default function TabOneScreen() {
   };
 
   const handleAddReminder = async () => {
-    if (!patientName.trim() || !medName.trim()) {
+    if (!patientName.trim() || !medName.trim() || !medQuantity.trim()) {
       Alert.alert(
         'Erro',
         'Por favor, preencha o nome do paciente e do remédio.'
@@ -102,6 +105,7 @@ export default function TabOneScreen() {
       id: Date.now().toString(),
       patientName: patientName,
       medName: medName,
+      medQuantity: medQuantity,
       time: time,
     };
     const updatedReminders = [...reminders, newReminder];
@@ -109,6 +113,7 @@ export default function TabOneScreen() {
     await saveReminders(updatedReminders);
     setPatientName('');
     setMedName('');
+    setMedQuantity('');
     setTime(new Date());
   };
 
@@ -149,6 +154,7 @@ export default function TabOneScreen() {
       <View style={styles.itemTextContainer}>
         <Text style={styles.itemPatient}>{item.patientName}</Text>
         <Text style={styles.itemMed}>{item.medName}</Text>
+        <Text style={styles.itemMedQuantity}>{item.medQuantity}</Text>
         <Text style={styles.itemTime}>{formatTime(item.time)}</Text>
       </View>
 
@@ -203,6 +209,13 @@ export default function TabOneScreen() {
               placeholderTextColor="#999"
               value={medName}
               onChangeText={setMedName}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Quantidade do Remédio"
+              placeholderTextColor="#999"
+              value={medQuantity}
+              onChangeText={setMedQuantity}
             />
             <TouchableOpacity
               onPress={() => setShowTimePicker(true)}
@@ -300,6 +313,12 @@ const styles = StyleSheet.create({
   itemMed: {
     fontSize: 16,
     color: '#333',
+  },
+  itemMedQuantity: {
+    fontSize: 16,
+    color: '#333',
+    fontWeight: 'bold',
+    fontStyle: 'italic'
   },
   itemTime: {
     fontSize: 16,
