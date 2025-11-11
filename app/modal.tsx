@@ -23,6 +23,7 @@ interface Reminder {
   id: string;
   patientName: string;
   medName: string;
+  medQuantity: string;
   time: Date;
 }
 
@@ -38,6 +39,7 @@ export default function ModalScreen() {
   // Estado para os campos do formulário
   const [patientName, setPatientName] = useState('');
   const [medName, setMedName] = useState('');
+  const [medQuantity, setMedQuantity] = useState('');
   const [time, setTime] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
 
@@ -51,6 +53,7 @@ export default function ModalScreen() {
       setReminder(reminderData);
       setPatientName(reminderData.patientName);
       setMedName(reminderData.medName);
+      setMedQuantity(reminderData.medQuantity);
       setTime(reminderData.time);
     }
   }, [params.reminder]);
@@ -73,7 +76,7 @@ export default function ModalScreen() {
 
   // Função para salvar as alterações
   const handleSaveEdit = async () => {
-    if (!reminder || !patientName.trim() || !medName.trim()) {
+    if (!reminder || !patientName.trim() || !medName.trim() || !medQuantity.trim()) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
@@ -82,6 +85,7 @@ export default function ModalScreen() {
       ...reminder,
       patientName: patientName,
       medName: medName,
+      medQuantity: medQuantity,
       time: time,
     };
 
@@ -134,6 +138,14 @@ export default function ModalScreen() {
           placeholderTextColor="#999"
           value={medName}
           onChangeText={setMedName}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Quantidade do Remédio"
+          placeholderTextColor="#999"
+          value={medQuantity}
+          onChangeText={setMedQuantity}
         />
 
         <TouchableOpacity
